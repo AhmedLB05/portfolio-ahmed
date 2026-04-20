@@ -51,7 +51,7 @@ export const DICT = {
       en: "Building modern web experiences with Next.js and 3D.",
     },
     cv: { es: "Descargar CV", en: "Download CV" },
-    hire: { es: "Contratarme", en: "Hire Me" },
+    hire: { es: "Contactarme", en: "Contact me" },
     scroll: { es: "Scroll para explorar", en: "Scroll to explore" },
     keysHint: {
       es: "· hover sobre las teclas",

@@ -68,7 +68,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     yaw: Math.PI * 0.15,
     pitch: Math.PI * 0.18,
     roll: Math.PI * 0.025,
-    posX: 0,
+    posX: 1.5,
     posY: 0,
     posZ: 0,
     scale: 1,
@@ -80,7 +80,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     yaw: Math.PI * 0.40,
     pitch: Math.PI * 0.14,
     roll: -Math.PI * -0.13,
-    posX: -0.8,
+    posX: 0,
     posY: -0.6,
     posZ: 0,
     scale: 1.3,
@@ -772,9 +772,9 @@ function Keyboard() {
         <Suspense fallback={null}>
           <group
             //position={[-2.6, -0.5, 0.9]}
-            position={[-2.3,0,1.3]}
+            position={[-1.7,0,1.5]}
             //rotation={[-0.8, Math.PI * -0.1  , Math.PI * 4.33]}
-            rotation={[-1,0.2,1]}
+            rotation={[-1,0.2,1.03]}
           >
             {/* No <Center>: Text3D renders with its first letter anchored
                 at the group's origin (X=0) and baseline at Y=0. So the first

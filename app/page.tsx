@@ -293,14 +293,21 @@ export default function Home() {
                   </svg>
                   {t("hero.cv")}
                 </a>
-                <a
-                  href={`mailto:${EMAIL}?subject=Hire%20me`}
+                <button
+                  type="button"
                   data-cursor="hover"
                   data-magnetic
                   className="frost-btn"
+                  onClick={() =>
+                    document
+                      .querySelector<HTMLElement>(
+                        '[data-kb-section="contact"]'
+                      )
+                      ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                  }
                 >
                   {t("hero.hire")}
-                </a>
+                </button>
                 <a
                   href="https://github.com/Txemalon"
                   target="_blank"
