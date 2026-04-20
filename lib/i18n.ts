@@ -74,22 +74,28 @@ export const DICT = {
   },
   projects: {
     kicker: { es: "proyecto", en: "project" },
+    viewMore: { es: "Ver más", en: "View more" },
+    openSite: { es: "Abrir sitio", en: "Visit site" },
+    viewCode: { es: "Ver código", en: "View code" },
+    close: { es: "Cerrar", en: "Close" },
+    stackLabel: { es: "Stack", en: "Stack" },
+    overview: { es: "Resumen", en: "Overview" },
   },
   contact: {
-    kicker: { es: "05 · contacto", en: "05 · contact" },
+    kicker: { es: "contacto", en: "contact" },
     title: { es: "¿Hablamos?", en: "Let's talk?" },
     body: {
       es: "Si lo que has visto te interesa, el teclado ya está listo para recibir el primer mensaje.",
       en: "If what you've seen interests you, the keyboard is ready for the first message.",
     },
     copyEmail: { es: "Copiar email", en: "Copy email" },
-    openMail: { es: "Abrir mailto", en: "Open mailto" },
+    openMail: { es: "Abrir mail", en: "Open mailto" },
     github: { es: "GitHub", en: "GitHub" },
     linkedin: { es: "LinkedIn", en: "LinkedIn" },
     emailToast: { es: "Email copiado", en: "Email copied" },
     footer: {
-      es: "Txema Albero · Alcoy, 2026",
-      en: "Txema Albero · Alcoy, 2026",
+      es: "© 2026 Txema Albero. Todos los derechos reservados.",
+      en: "© 2026 Txema Albero. All rights reserved.",
     },
   },
   keyboard: {

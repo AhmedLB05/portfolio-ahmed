@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import FrozenKeyboard from "@/components/FrozenKeyboard";
 import SmoothScroll from "@/components/smooth-scroll";
 import Reveal from "@/components/Reveal";
@@ -7,6 +8,9 @@ import SectionNav from "@/components/SectionNav";
 import CopyEmail from "@/components/CopyEmail";
 import SeasonPicker from "@/components/SeasonPicker";
 import LanguagePicker from "@/components/LanguagePicker";
+import ProjectModal, {
+  type ProjectDetail,
+} from "@/components/ProjectModal";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { Lang } from "@/lib/i18n";
 
@@ -17,26 +21,37 @@ const EMAIL = "josemariaalberobelamendia@gmail.com";
 // as plain strings (they're brand names, not localised).
 type Localised = { es: string; en: string };
 
-const projects: Array<{
-  num: string;
-  name: Localised;
-  stack: string[];
-  desc: Localised;
-  badge?: Localised;
+type Project = ProjectDetail & {
   align: "left" | "right";
-  section: "project1" | "project2" | "project3";
-}> = [
+  section: "project1" | "project2" | "project3" | "project4";
+};
+
+const projects: Project[] = [
   {
     num: "01",
     name: {
       es: "Contestador IA de Reseñas Google",
       en: "AI Responder for Google Reviews",
     },
-    stack: ["Python", "OpenAI API", "Google Business API"],
+    stack: [
+      "Next.js",
+      "FastAPI",
+      "Python",
+      "PostgreSQL",
+      "Supabase",
+      "Claude API",
+      "Stripe",
+      "Celery",
+    ],
     desc: {
-      es: "Sistema automatizado que genera respuestas personalizadas a reseñas de Google My Business usando IA, manteniendo el tono de marca.",
-      en: "Automated system that generates personalised replies to Google My Business reviews using AI, keeping the brand tone consistent.",
+      es: "SaaS que genera respuestas personalizadas a reseñas de Google Business Profile con IA, manteniendo el tono de la marca.",
+      en: "SaaS that generates personalised replies to Google Business Profile reviews with AI while keeping the brand tone.",
     },
+    details: {
+      es: "Plataforma orientada a negocios locales en España para gestionar sus reseñas de Google Business Profile. El sistema hace polling cada 15 minutos, llama a Claude para generar respuestas alineadas con el tono de marca y las publica automáticamente (o las manda a revisión). Incluye Stripe con suscripciones y Customer Portal, autenticación con Google OAuth + PKCE, alertas por email/SMS para reseñas negativas y un dashboard con métricas.",
+      en: "A platform for local businesses in Spain to manage their Google Business Profile reviews. The system polls every 15 minutes, uses Claude to draft replies in the brand's tone and publishes them automatically (or sends them to review). Stripe handles subscriptions and Customer Portal, auth is Google OAuth with PKCE, and negative reviews fire email/SMS alerts. Dashboard with metrics included.",
+    },
+    highlights: ["nextdotjs", "tailwindcss", "python", "postgresql"],
     align: "left",
     section: "project1",
   },
@@ -46,11 +61,25 @@ const projects: Array<{
       es: "Control de Temperaturas APPCC",
       en: "HACCP Temperature Control",
     },
-    stack: ["Next.js", "React", "PostgreSQL", "Docker"],
+    stack: [
+      "Next.js 16",
+      "FastAPI",
+      "Python",
+      "PostgreSQL",
+      "Supabase",
+      "Claude API",
+      "Stripe",
+      "Celery",
+    ],
     desc: {
-      es: "App para restaurantes que digitaliza el registro de temperaturas de frigoríficos y genera informes automáticos para inspecciones sanitarias.",
-      en: "App for restaurants that digitises fridge temperature logs and auto-generates reports for food safety inspections.",
+      es: "App para restaurantes que digitaliza el registro de temperaturas APPCC y genera planes e informes automáticos para inspecciones sanitarias.",
+      en: "App for restaurants that digitises HACCP temperature logs and auto-generates plans and reports for food safety inspections.",
     },
+    details: {
+      es: "Digitaliza el control APPCC completo de un restaurante: registros de temperatura, trazabilidad, alérgenos y generación asistida por IA de los planes HACCP. Integración con Open Food Facts para importar alérgenos, MFA en la autenticación, multi-idioma con next-intl y pagos por suscripción con Stripe. Backend 100% async con FastAPI + SQLAlchemy y tareas en Celery.",
+      en: "Full HACCP digitisation for a restaurant: temperature logs, traceability, allergens, and AI-assisted generation of HACCP plans. Integrates with Open Food Facts for allergens, MFA-protected auth, i18n with next-intl, subscription billing with Stripe. Fully async backend with FastAPI + SQLAlchemy and Celery workers.",
+    },
+    highlights: ["nextdotjs", "tailwindcss", "python", "postgresql", "typescript"],
     badge: { es: "En desarrollo", en: "In progress" },
     align: "right",
     section: "project2",
@@ -61,13 +90,55 @@ const projects: Array<{
       es: "Gestor de Finanzas Personales",
       en: "Personal Finance Tracker",
     },
-    stack: ["React", "Node.js", "PostgreSQL"],
+    stack: [
+      "Django",
+      "Python",
+      "SQLite",
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Chart.js",
+      "pandas",
+    ],
     desc: {
-      es: "Dashboard para seguimiento de ingresos, gastos y objetivos de ahorro con visualizaciones gráficas e informes mensuales.",
-      en: "Dashboard for tracking income, expenses and savings goals with visual charts and monthly reports.",
+      es: "Dashboard para seguimiento de ingresos, gastos y objetivos de ahorro con visualizaciones gráficas, importación desde Excel e informes mensuales.",
+      en: "Dashboard to track income, expenses and savings goals with visual charts, Excel import and monthly reports.",
     },
+    details: {
+      es: "Aplicación Django clásica (MVT) para finanzas personales: categorización de gastos, objetivos de ahorro, importación masiva desde Excel (xlsx/xls) y gráficos con Chart.js. Temas claro/oscuro hechos con CSS puro y sin dependencias frontend. Un proyecto que prioriza simplicidad y robustez: sin frameworks en el cliente, autenticación nativa de Django, base de datos SQLite.",
+      en: "Classic Django (MVT) app for personal finance: expense categorisation, savings goals, bulk import from Excel (xlsx/xls) and Chart.js-powered graphs. Light/dark themes in pure CSS with zero frontend dependencies. A project that favours simplicity and robustness: no client framework, Django's built-in auth, SQLite storage.",
+    },
+    highlights: ["python", "javascript", "html5", "css"],
     align: "left",
     section: "project3",
+  },
+  {
+    num: "04",
+    name: {
+      es: "Tienda online de dianas",
+      en: "Dartboards e-commerce",
+    },
+    stack: [
+      "Next.js 15",
+      "React",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL",
+      "NextAuth",
+      "Stripe",
+      "Framer Motion",
+    ],
+    desc: {
+      es: "E-commerce moderno para venta de dianas con pagos integrados, autenticación social, panel de administración y animaciones fluidas.",
+      en: "Modern e-commerce for dartboards with integrated payments, social auth, an admin panel and smooth animations.",
+    },
+    details: {
+      es: "Tienda online completa con catálogo, carrito y checkout con Stripe. NextAuth con Google OAuth y credenciales, rate limiting con Upstash Redis, validación con Zod y un panel de administración separado (AdminJS sobre Express, puerto 3001). Transiciones y microinteracciones con Framer Motion para darle un acabado más premium que una tienda al uso.",
+      en: "A full e-commerce with catalogue, cart and Stripe checkout. NextAuth with Google OAuth and credentials, Upstash Redis for rate limiting, Zod validation, and a separate admin panel (AdminJS on Express, port 3001). Framer Motion powers transitions and micro-interactions for a more premium feel than a typical shop.",
+    },
+    highlights: ["nextdotjs", "react", "typescript", "tailwindcss", "postgresql"],
+    align: "right",
+    section: "project4",
   },
 ];
 
@@ -135,6 +206,7 @@ function HeroWord({
 
 export default function Home() {
   const { t, lang } = useLanguage();
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   return (
     <SmoothScroll>
@@ -307,12 +379,17 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Experience */}
+          {/* Experience — title is sticky at top-24 (feels anchored) but sits
+              BEHIND the cards (z-0 vs. card wrapper's z-10), so as you scroll
+              the card slides over the title. The section has no extra filler
+              beyond the cards, so when you scroll past the last card the
+              section ends and the title un-pins and exits the viewport at the
+              same time — giving the "anchored then both disappear" feel. */}
           <section
             data-kb-section="experience"
-            className="relative p-6 sm:p-10 md:p-14 pb-32 min-h-[140vh]"
+            className="relative p-6 sm:p-10 md:p-14 pb-24"
           >
-            <div className="sticky top-24 sm:top-28 text-center mb-12 sm:mb-16 z-10">
+            <div className="sticky top-24 sm:top-28 text-center mb-12 sm:mb-16 z-0">
               <Reveal>
                 <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-[-0.03em] text-ice-50 leading-[0.95]">
                   {t("experience.title")}
@@ -325,7 +402,7 @@ export default function Home() {
               </Reveal>
             </div>
 
-            <div className="max-w-3xl mx-auto space-y-6 relative">
+            <div className="relative z-10 max-w-3xl mx-auto space-y-6">
               {experiences.map((exp, idx) => (
                 <Reveal
                   key={`${exp.company}-${idx}`}
@@ -388,6 +465,7 @@ export default function Home() {
             <section
               key={p.num}
               data-kb-section={p.section}
+              data-kb-highlights={(p.highlights ?? []).join(",")}
               className="relative min-h-screen flex items-center p-6 sm:p-10 md:p-14 overflow-hidden"
             >
               <span
@@ -403,7 +481,10 @@ export default function Home() {
                 className={
                   p.align === "left"
                     ? "max-w-xl relative"
-                    : "max-w-xl ml-auto text-right relative"
+                    : // Right-aligned cards get extra right padding on md+ so
+                      // the action buttons ("Ver más") don't sit under the
+                      // fixed SectionNav dots on the right edge.
+                      "max-w-xl ml-auto text-right relative md:mr-16 lg:mr-24"
                 }
               >
                 <Reveal>
@@ -432,8 +513,8 @@ export default function Home() {
                   <div
                     className={
                       p.align === "right"
-                        ? "flex flex-wrap gap-1.5 justify-end pointer-events-auto"
-                        : "flex flex-wrap gap-1.5 pointer-events-auto"
+                        ? "flex flex-wrap gap-1.5 justify-end pointer-events-auto mb-5"
+                        : "flex flex-wrap gap-1.5 pointer-events-auto mb-5"
                     }
                   >
                     {p.stack.map((s) => (
@@ -447,19 +528,48 @@ export default function Home() {
                     ))}
                   </div>
                 </Reveal>
+                <Reveal delay={320}>
+                  <div
+                    className={
+                      p.align === "right"
+                        ? "flex justify-end pointer-events-auto"
+                        : "flex pointer-events-auto"
+                    }
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setActiveProject(p)}
+                      data-cursor="hover"
+                      data-magnetic
+                      className="frost-btn"
+                    >
+                      {t("projects.viewMore")}
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="14"
+                        height="14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        aria-hidden
+                      >
+                        <path d="M5 12h14M13 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </Reveal>
               </div>
             </section>
           ))}
 
-          {/* Contact */}
+          {/* Contact — copy pinned to the left so the (large, hero-posed)
+              keyboard on the right has room to bob its random keys. */}
           <section
             data-kb-section="contact"
-            className="relative min-h-screen flex flex-col items-center justify-center p-6 sm:p-10 md:p-14 overflow-hidden"
+            className="relative min-h-screen flex flex-col justify-center p-6 sm:p-10 md:p-14 overflow-hidden"
           >
-            <span aria-hidden className="watermark top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-60">
-              05
-            </span>
-            <div className="text-center max-w-2xl relative">
+            <div className="max-w-xl relative">
               <Reveal>
                 <p className="font-mono text-sm text-ice-400 mb-3">
                   {t("contact.kicker")}
@@ -474,7 +584,7 @@ export default function Home() {
                 <p className="text-ice-200 mb-10">{t("contact.body")}</p>
               </Reveal>
               <Reveal delay={240}>
-                <div className="flex flex-wrap gap-3 justify-center pointer-events-auto">
+                <div className="flex flex-wrap gap-3 pointer-events-auto">
                   <CopyEmail
                     email={EMAIL}
                     className="frost-btn frost-btn--primary"
@@ -520,6 +630,11 @@ export default function Home() {
             </Reveal>
           </section>
         </main>
+
+        <ProjectModal
+          project={activeProject}
+          onClose={() => setActiveProject(null)}
+        />
       </div>
     </SmoothScroll>
   );
