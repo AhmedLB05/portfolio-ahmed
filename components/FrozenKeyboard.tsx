@@ -14,40 +14,11 @@ import {
   useMemo,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 import { useSeason } from "@/components/SeasonProvider";
 import { useLanguage } from "@/components/LanguageProvider";
 import * as THREE from "three";
-import {
-  siCss,
-  siDocker,
-  siGit,
-  siHtml5,
-  siJavascript,
-  siNextdotjs,
-  siNodedotjs,
-  siOdoo,
-  siPhp,
-  siPostgresql,
-  siPython,
-  siReact,
-  siTailwindcss,
-  siTypescript,
-  siVuedotjs,
-} from "simple-icons";
-
-const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-const subscribeMobile = () => () => {};
-const getMobileSnapshot = () => mobileRegex.test(navigator.userAgent);
-const getMobileServerSnapshot = () => false;
-function useIsMobile() {
-  return useSyncExternalStore(
-    subscribeMobile,
-    getMobileSnapshot,
-    getMobileServerSnapshot
-  );
-}
+import { SKILLS_GRID, type SkillIcon } from "@/lib/skills";
 
 // Per-section keyboard "states" — same idea as Naresh's animated-background-
 // config.ts, but for our R3F keyboard. Values are tweened toward via lerp
@@ -148,6 +119,19 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posZ: 0,
     scale: 1,
   },
+};
+
+// Mobile lives in the hero only (the canvas scrolls away with it), so there is
+// no per-section choreography — the keyboard sits centered with a permanent
+// cinematic idle swing and reacts to taps instead of hover.
+const MOBILE_STATE: KeyboardState = {
+  yaw: Math.PI * 0.16,
+  pitch: Math.PI * 0.2,
+  roll: 0.02,
+  posX: 0,
+  posY: 0,
+  posZ: 0,
+  scale: 1.55,
 };
 
 // Track which data-kb-section element is currently most prominent on-screen.
@@ -293,15 +277,7 @@ function makeIconTexture(
   return tex;
 }
 
-const FRAME_TARGET: [number, number, number] = [-1.0, 0, 0];
-
-type SkillIcon = { title: string; slug: string; path: string; hex: string };
-
-const SKILLS: readonly (readonly SkillIcon[])[] = [
-  [siJavascript, siTypescript, siHtml5, siCss, siTailwindcss],
-  [siPython, siReact, siNextdotjs, siVuedotjs, siNodedotjs],
-  [siPhp, siOdoo, siPostgresql, siDocker, siGit],
-] as const;
+const SKILLS = SKILLS_GRID;
 
 const COLS = 5;
 const ROWS = 3;
@@ -555,6 +531,17 @@ function Keycap({
   );
   const handleOut = useCallback(() => onHoverChange(false), [onHoverChange]);
 
+  // Touch devices never fire hover, so on mobile we drive the same press +
+  // SFX path from pointer down/up — a momentary tap-to-bounce.
+  const handleDown = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      onHoverChange(true);
+    },
+    [onHoverChange]
+  );
+  const handleUp = useCallback(() => onHoverChange(false), [onHoverChange]);
+
   const iconY = KEYCAP_HEIGHT / 2 + 0.0015;
 
   return (
@@ -562,8 +549,11 @@ function Keycap({
       <group ref={pressRef}>
         <mesh
           geometry={geometry}
-          onPointerOver={handleOver}
-          onPointerOut={handleOut}
+          onPointerOver={isMobile ? undefined : handleOver}
+          onPointerOut={isMobile ? undefined : handleOut}
+          onPointerDown={isMobile ? handleDown : undefined}
+          onPointerUp={isMobile ? handleUp : undefined}
+          onPointerCancel={isMobile ? handleUp : undefined}
         >
           <meshPhysicalMaterial
             ref={matRef}
@@ -595,9 +585,9 @@ function Keycap({
   );
 }
 
-function Keyboard() {
+function Keyboard({ mobile }: { mobile: boolean }) {
   const ref = useRef<THREE.Group>(null);
-  const isMobile = useIsMobile();
+  const isMobile = mobile;
   const { palette } = useSeason();
   const { t } = useLanguage();
   const [activeSection, activeSectionRef, highlightsRef] = useActiveSection();
@@ -613,6 +603,7 @@ function Keyboard() {
   // When scrolling between two project sections, kick off a spin. Direction
   // alternates per target project so consecutive flips don't look identical.
   useEffect(() => {
+    if (mobile) return; // no project→project flips on mobile (hero-only)
     const prev = prevSectionId.current;
     prevSectionId.current = activeSection;
     if (prev === activeSection) return;
@@ -622,7 +613,7 @@ function Keyboard() {
     const n = parseInt(activeSection.replace("project", ""), 10) || 0;
     const dir = n % 2 === 0 ? 1 : -1;
     spinRef.current += Math.PI * 2 * dir;
-  }, [activeSection]);
+  }, [activeSection, mobile]);
 
   // Drive global cursor + click SFX from the single Keyboard instance.
   useEffect(() => {
@@ -643,8 +634,9 @@ function Keyboard() {
   useFrame((state, delta) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
-    const target =
-      SECTION_STATES[activeSectionRef.current] ?? SECTION_STATES.hero;
+    const target = mobile
+      ? MOBILE_STATE
+      : SECTION_STATES[activeSectionRef.current] ?? SECTION_STATES.hero;
     // Frame-rate-independent lerp: ~0.06 per 16ms tick = a satisfying ease.
     const k = 1 - Math.pow(0.001, delta);
     const c = current.current;
@@ -668,6 +660,7 @@ function Keyboard() {
     // yoyo so the keyboard "shows itself"; other sections keep a quiet
     // breathing so the copy is easier to read.
     const isShowcase =
+      mobile ||
       activeSectionRef.current === "hero" ||
       activeSectionRef.current === "contact";
     const yawSwing = isShowcase ? 0.5 : 0.025;
@@ -768,7 +761,7 @@ function Keyboard() {
           yaw/pitch/scale don't warp the text. Placed in world space, to the
           left of the tilted keyboard, with its own matching isometric yaw +
           a small roll so the baseline rises left-to-right like Naresh's. */}
-      {activeSection === "stack" && hoveredIcon && (
+      {!mobile && activeSection === "stack" && hoveredIcon && (
         <Suspense fallback={null}>
           <group
             //position={[-2.6, -0.5, 0.9]}
@@ -817,11 +810,22 @@ function Keyboard() {
   );
 }
 
-export default function FrozenKeyboard() {
+export default function FrozenKeyboard({
+  mobile = false,
+}: {
+  mobile?: boolean;
+}) {
   return (
     <Canvas
-      camera={{ position: [1.5, 3.6, 11], fov: 22 }}
-      dpr={[1, 2]}
+      // Portrait gets a pulled-back, centered, less top-down camera so the
+      // keyboard reads as a front-facing hero centerpiece instead of the
+      // off-axis desktop composition.
+      camera={
+        mobile
+          ? { position: [0, 2.0, 9.0], fov: 26 }
+          : { position: [1.5, 3.6, 11], fov: 22 }
+      }
+      dpr={mobile ? [1, 1.5] : [1, 2]}
       gl={{
         antialias: true,
         alpha: true,
@@ -876,7 +880,7 @@ export default function FrozenKeyboard() {
         groundColor="#0a1428"
       />
 
-      <Keyboard />
+      <Keyboard mobile={mobile} />
 
     </Canvas>
   );

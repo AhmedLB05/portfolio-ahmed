@@ -12,6 +12,8 @@ import ProjectModal, {
   type ProjectDetail,
 } from "@/components/ProjectModal";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useIsMobile } from "@/lib/useIsMobile";
+import { SKILLS_FLAT } from "@/lib/skills";
 import type { Lang } from "@/lib/i18n";
 
 const EMAIL = "josemariaalberobelamendia@gmail.com";
@@ -238,31 +240,40 @@ function HeroWord({
 
 export default function Home() {
   const { t, lang } = useLanguage();
+  const isMobile = useIsMobile();
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   return (
     <SmoothScroll>
       <div className="relative">
-        {/* Persistent 3D scene — fullscreen behind content; events must reach it. */}
-        <div className="fixed inset-0 z-0">
-          <FrozenKeyboard />
-        </div>
+        {/* Desktop: persistent 3D scene fullscreen behind content. On mobile
+            the canvas lives inside the hero instead (see below) so it scrolls
+            away and the rest of the page is clean, fast 2D. */}
+        {!isMobile && (
+          <div className="fixed inset-0 z-0">
+            <FrozenKeyboard />
+          </div>
+        )}
 
         {/* Header */}
         <header className="fixed top-0 inset-x-0 z-50 px-6 sm:px-10 md:px-14 py-5 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-3 pointer-events-auto">
             <span
               data-cursor="hover"
-              className="text-sm font-semibold tracking-tight text-ice-100"
+              className="text-sm font-semibold tracking-tight text-ice-100 whitespace-nowrap"
             >
               Txema Albero
             </span>
-            <span className="status-pill hidden sm:inline-flex">
-              {t("header.availability")}
+            {/* Wrapper (not the pill itself) carries the hide: .status-pill
+                hard-sets display:inline-flex, which beats Tailwind's .hidden
+                due to CSS source order, so hiding must happen on a parent. */}
+            <span className="hidden md:inline-flex">
+              <span className="status-pill">{t("header.availability")}</span>
             </span>
           </div>
           <div className="flex items-center gap-2 pointer-events-auto">
             <SeasonPicker />
+            <span className="hidden md:inline-flex">
             <a
               href="https://github.com/Txemalon/3d-portfolio"
               target="_blank"
@@ -275,6 +286,7 @@ export default function Home() {
               </svg>
               <span>GitHub</span>
             </a>
+            </span>
             <LanguagePicker />
           </div>
         </header>
@@ -287,7 +299,14 @@ export default function Home() {
             data-kb-section="hero"
             className="min-h-screen flex flex-col justify-center p-6 sm:p-10 md:p-14"
           >
-            <div className="mt-20">
+            {/* Mobile-only 3D centerpiece. Lives inside the hero (scrolls away
+                with it) and takes pointer events so keycaps are tappable. */}
+            {isMobile && (
+              <div className="w-full h-[34vh] mt-12 -mb-4 pointer-events-auto">
+                <FrozenKeyboard mobile />
+              </div>
+            )}
+            <div className="mt-2 md:mt-20">
               <p
                 className="text-[11px] uppercase tracking-[0.3em] text-ice-300 mb-5 fade-in-up"
                 style={{ ["--d" as string]: "0ms" }}
@@ -342,19 +361,10 @@ export default function Home() {
                 >
                   {t("hero.hire")}
                 </button>
-                <a
-                  href="https://github.com/Txemalon"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="hover"
-                  data-magnetic
-                  className="frost-icon"
-                  aria-label="GitHub"
-                >
-                  <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden>
-                    <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                  </svg>
-                </a>
+                {/* Mobile-only full-width break: forces the social icons onto
+                    their own row below the two primary buttons. Hidden on md+
+                    so desktop keeps everything on a single line. */}
+                <div className="basis-full h-0 md:hidden" aria-hidden />
                 <a
                   href="https://es.linkedin.com/in/jose-mar%C3%ADa-albero-belamendia-b9319a246"
                   target="_blank"
@@ -369,16 +379,16 @@ export default function Home() {
                   </svg>
                 </a>
                 <a
-                  href="https://x.com/Txemalon"
+                  href="https://github.com/Txemalon"
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="hover"
                   data-magnetic
                   className="frost-icon"
-                  aria-label="X / Twitter"
+                  aria-label="GitHub"
                 >
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden>
-                    <path d="M17.18 3H20.5l-7.36 8.41L21.75 21h-6.62l-5.18-6.78L4.04 21H.7l7.86-8.97L0 3h6.78l4.69 6.21L17.18 3zm-1.16 16.13h1.84L6.06 4.79H4.09l11.93 14.34z" />
+                  <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden>
+                    <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
                   </svg>
                 </a>
               </div>
@@ -386,7 +396,7 @@ export default function Home() {
 
             {/* Animated scroll indicator at bottom */}
             <div
-              className="mt-auto flex items-center gap-3 fade-in-up"
+              className="mt-10 md:mt-auto flex items-center gap-3 fade-in-up"
               style={{ ["--d" as string]: "900ms" }}
             >
               <span className="scroll-indicator">
@@ -399,13 +409,16 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Stack */}
+          {/* Stack — desktop relies on the 200vh scroll + sticky title while
+              the keyboard does the talking on hover. On mobile (md:) that
+              choreography is gone, so we drop the tall scroll and render a
+              real, legible skills grid with the same taglines. */}
           <section
             data-kb-section="stack"
-            className="relative min-h-[200vh] p-6 sm:p-10 md:p-14"
+            className="relative md:min-h-[200vh] p-6 sm:p-10 md:p-14"
           >
-            <div className="relative h-[150vh]">
-              <div className="sticky top-24 sm:top-28 text-center">
+            <div className="relative md:h-[150vh]">
+              <div className="md:sticky md:top-28 text-center">
                 <Reveal>
                   <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-[-0.03em] text-ice-50 leading-[0.95]">
                     {t("stack.title")}
@@ -413,10 +426,43 @@ export default function Home() {
                 </Reveal>
                 <Reveal delay={120}>
                   <p className="mt-3 text-sm sm:text-base text-ice-400">
-                    {t("stack.hint")}
+                    <span className="hidden md:inline">{t("stack.hint")}</span>
+                    <span className="md:hidden">{t("stack.hintMobile")}</span>
                   </p>
                 </Reveal>
               </div>
+
+              {/* Mobile skills grid (recovers the hover interaction as static
+                  content the keyboard can't surface on touch). */}
+              {isMobile && (
+                <div className="md:hidden mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 pointer-events-auto">
+                  {SKILLS_FLAT.map((s) => (
+                    <div
+                      key={s.slug}
+                      className="flex items-start gap-3 rounded-xl bg-ink-1/70 backdrop-blur-sm border border-ink-3 p-4"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="22"
+                        height="22"
+                        fill={`#${s.hex}`}
+                        className="flex-none mt-0.5"
+                        aria-hidden
+                      >
+                        <path d={s.path} />
+                      </svg>
+                      <div>
+                        <p className="text-ice-50 font-medium text-sm">
+                          {s.title}
+                        </p>
+                        <p className="text-ice-400 text-xs mt-0.5 leading-snug">
+                          {t(`keyboard.taglines.${s.slug}`)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -507,11 +553,11 @@ export default function Home() {
               key={p.num}
               data-kb-section={p.section}
               data-kb-highlights={(p.highlights ?? []).join(",")}
-              className="relative min-h-screen flex items-center p-6 sm:p-10 md:p-14 overflow-hidden"
+              className="relative py-20 md:min-h-screen flex items-center p-6 sm:p-10 md:p-14 overflow-hidden"
             >
               <span
                 aria-hidden
-                className={`watermark top-1/2 -translate-y-1/2 ${
+                className={`watermark hidden md:block top-1/2 -translate-y-1/2 ${
                   p.align === "left" ? "right-[-2vw]" : "left-[-2vw]"
                 }`}
               >
@@ -524,8 +570,9 @@ export default function Home() {
                     ? "max-w-xl relative"
                     : // Right-aligned cards get extra right padding on md+ so
                       // the action buttons ("Ver más") don't sit under the
-                      // fixed SectionNav dots on the right edge.
-                      "max-w-xl ml-auto text-right relative md:mr-16 lg:mr-24"
+                      // fixed SectionNav dots on the right edge. On mobile they
+                      // collapse to a normal left-aligned full-width card.
+                      "max-w-xl relative md:ml-auto md:text-right md:mr-16 lg:mr-24"
                 }
               >
                 <Reveal>
@@ -554,7 +601,7 @@ export default function Home() {
                   <div
                     className={
                       p.align === "right"
-                        ? "flex flex-wrap gap-1.5 justify-end pointer-events-auto mb-5"
+                        ? "flex flex-wrap gap-1.5 md:justify-end pointer-events-auto mb-5"
                         : "flex flex-wrap gap-1.5 pointer-events-auto mb-5"
                     }
                   >
@@ -573,7 +620,7 @@ export default function Home() {
                   <div
                     className={
                       p.align === "right"
-                        ? "flex justify-end pointer-events-auto"
+                        ? "flex md:justify-end pointer-events-auto"
                         : "flex pointer-events-auto"
                     }
                   >
@@ -608,7 +655,7 @@ export default function Home() {
               keyboard on the right has room to bob its random keys. */}
           <section
             data-kb-section="contact"
-            className="relative min-h-screen flex flex-col justify-center p-6 sm:p-10 md:p-14 overflow-hidden"
+            className="relative py-24 md:min-h-screen flex flex-col justify-center p-6 sm:p-10 md:p-14 overflow-hidden"
           >
             <div className="max-w-xl relative">
               <Reveal>

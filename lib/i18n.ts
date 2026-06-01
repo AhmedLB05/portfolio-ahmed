@@ -47,8 +47,8 @@ export const DICT = {
       en: "Software Engineer & Tech Lead.",
     },
     tagline: {
-      es: "Construyendo experiencias web modernas con Next.js y 3D.",
-      en: "Building modern web experiences with Next.js and 3D.",
+      es: "Especializado en ERPs y aplicaciones full-stack para empresas.",
+      en: "Specialised in ERPs and full-stack apps for businesses.",
     },
     cv: { es: "Descargar CV", en: "Download CV" },
     hire: { es: "Contactarme", en: "Contact me" },
@@ -63,6 +63,10 @@ export const DICT = {
     hint: {
       es: "(hint: pasa el ratón por una tecla)",
       en: "(hint: hover over a key)",
+    },
+    hintMobile: {
+      es: "Las herramientas con las que construyo.",
+      en: "The tools I build with.",
     },
   },
   experience: {
