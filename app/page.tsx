@@ -395,7 +395,7 @@ export default function Home() {
                   {SKILLS_FLAT.map((s) => (
                     <div
                       key={s.slug}
-                      className="flex items-start gap-3 rounded-xl bg-ink-1/70 backdrop-blur-sm border border-ink-3 p-4"
+                      className="flex items-start gap-3 rounded-xl bg-ink-1/90 border border-ink-3 p-4"
                     >
                       <svg
                         viewBox="0 0 24 24"
