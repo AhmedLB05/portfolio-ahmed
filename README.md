@@ -1,169 +1,51 @@
-# 3D Developer Portfolio
+# Ahmed Lhaouchi Briki - Full Stack Developer Portfolio
 
-An immersive, interactive developer portfolio built with **Next.js 16**, **React Three Fiber**, and **Tailwind CSS v4**. Features a 3D mechanical keyboard hero scene, seasonal themes, smooth scroll animations, bilingual support (ES/EN), and a fully responsive design.
+Bienvenido al repositorio de mi portfolio personal. Este proyecto es una experiencia interactiva en 3D diseñada para mostrar mi stack tecnológico, experiencia y proyectos reales de forma inmersiva.
 
-**[Live Demo](https://txemaalbero.com)** &nbsp;|&nbsp; **Built by [Txema Albero](https://es.linkedin.com/in/jose-mar%C3%ADa-albero-belamendia-b9319a246)**
+[🌐 **Ver Portfolio Online**](https://AhmedLB05.github.io/portfolio-ahmed)
 
----
+## 🚀 Características Técnicas
 
-## Highlights
+Este portfolio no es solo una página de presentación, sino una demostración técnica en sí misma:
 
-- **Interactive 3D Keyboard** — A full mechanical keyboard rendered with React Three Fiber and Three.js. Keys react to real keypresses with physics-based animations and sound effects.
-- **Seasonal Themes** — Four complete visual themes (Winter, Spring, Summer, Autumn) that re-skin the entire UI — colours, gradients, and 3D scene lighting — with a single click.
-- **Project Showcases** — Modal dialogs with image carousels, tech stack chips, and links to live demos and source code.
-- **Bilingual (ES/EN)** — Lightweight custom i18n layer with zero external dependencies. Language toggle persists across sections.
-- **Smooth Scroll & Reveal Animations** — Powered by [Lenis](https://github.com/darkroomengineering/lenis) for buttery smooth scrolling with intersection-observer-based reveal effects.
-- **Custom Cursor & Magnetic Targets** — A custom cursor that morphs on interactive elements, with magnetic snap behaviour on buttons.
-- **Responsive & Mobile-First** — Optimised for recruiters reviewing on phones. WebGL performance and touch interactions are first-class concerns.
-- **Security Headers** — HSTS, X-Frame-Options, Content-Type-Options, Referrer-Policy, and Permissions-Policy configured out of the box.
+- **Framework:** Construido con **Next.js 16** (App Router) y React.
+- **Renderizado 3D (WebGL):** El héroe de la página es un teclado mecánico interactivo completamente renderizado en 3D usando **Three.js** y **React Three Fiber**. Las teclas reaccionan físicamente al scroll y a la interacción del usuario.
+- **Animaciones y Físicas:**
+  - Sistema de sonido posicional utilizando la Web Audio API (samples de interruptores mecánicos con `detuning` dinámico).
+  - Efectos de "Travelling Wave" basados en funciones trigonométricas (seno/coseno) sobre las teclas activas.
+- **Temas Dinámicos:** Soporte para 4 temas estacionales (Invierno, Primavera, Verano, Otoño) que cambian variables CSS y la iluminación de la escena 3D en tiempo real.
+- **Despliegue:** CI/CD automatizado con **GitHub Actions** hacia **GitHub Pages**.
 
-## Tech Stack
+## 💻 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) |
-| 3D | [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) + [@react-three/drei](https://github.com/pmndrs/drei) + [Three.js](https://threejs.org/) |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
-| Scroll | [Lenis](https://github.com/darkroomengineering/lenis) |
-| Icons | [Simple Icons](https://simpleicons.org/) (tech logos on 3D keycaps) |
-| Language | TypeScript |
-| Deploy | Vercel / Docker |
+El teclado 3D representa de forma interactiva mi stack principal:
 
-## Getting Started
+- **Frontend & Mobile:** React, Next.js, Angular, Flutter, JavaScript, TypeScript
+- **Backend:** Node.js, NestJS, Spring Boot (Java), GraphQL, REST APIs
+- **Infraestructura & DevOps:** Docker, Kubernetes, PostgreSQL, MySQL, Redis, AWS
+- **Calidad:** Jest, JUnit 5, CI/CD pipelines
 
-### Prerequisites
+## 📂 Proyectos Destacados
 
-- **Node.js** 20+
-- **npm** 10+
+Puedes encontrar el código de mis proyectos principales en mi perfil de GitHub:
 
-### Installation
+1. **[Ultimate FIFA App](https://github.com/AhmedLB05/Ultimate-Fifa-App):** App móvil End-to-End con AWS, Spring Boot y Flutter.
+2. **[CrossFit REST API](https://github.com/AhmedLB05/CrossFit_API_Backend-Mejoras):** Backend robusto con Node.js, Express y operaciones CRUD completas.
+3. **[WEB-AUDIOGUIA-AHMED](https://github.com/AhmedLB05/WEB-AUDIOGUIA-AHMED):** Panel de administración web para audioguías de museos.
+
+## 🛠️ Desarrollo Local
+
+Si quieres ejecutar este proyecto en tu máquina local:
 
 ```bash
-# Clone the repository
-git clone https://github.com/Txemalon/3d-portfolio.git
-cd 3d-portfolio
-
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start the development server
+# Arrancar el servidor de desarrollo
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
-### Docker
-
-The project includes a multi-stage Dockerfile optimised for production (standalone output, ~100 MB final image):
-
-```bash
-docker build -t 3d-portfolio .
-docker run -p 3000:3000 3d-portfolio
-```
-
-## Project Structure
-
-```
-├── app/
-│   ├── globals.css        # Tailwind + CSS custom properties (seasonal themes)
-│   ├── layout.tsx         # Root layout with providers
-│   └── page.tsx           # Home page with all sections
-├── components/
-│   ├── FrozenKeyboard.tsx # 3D keyboard scene (R3F)
-│   ├── FrozenBackground.tsx # Animated background particles
-│   ├── Carousel.tsx       # Image carousel for project modals
-│   ├── ProjectModal.tsx   # Fullscreen project detail dialog
-│   ├── SeasonProvider.tsx # Seasonal theme context
-│   ├── SeasonPicker.tsx   # Theme switcher UI
-│   ├── LanguageProvider.tsx # i18n context
-│   ├── LanguagePicker.tsx # Language toggle
-│   ├── CustomCursor.tsx   # Custom cursor with hover states
-│   ├── MagneticTargets.tsx# Magnetic snap on interactive elements
-│   ├── Reveal.tsx         # Scroll-triggered reveal animations
-│   ├── SectionNav.tsx     # Dot navigation sidebar
-│   ├── ScrollProgress.tsx # Scroll progress indicator
-│   ├── CopyEmail.tsx      # Copy-to-clipboard button
-│   └── smooth-scroll.tsx  # Lenis smooth scroll wrapper
-├── lib/
-│   ├── i18n.ts            # Bilingual dictionary (ES/EN)
-│   └── seasons.ts         # Season theme definitions
-├── public/
-│   ├── fonts/             # 3D text typefaces
-│   ├── projects/          # Project screenshots
-│   └── sounds/            # Keyboard sound effects
-├── Dockerfile             # Multi-stage production build
-├── next.config.ts         # Standalone output + security headers
-└── package.json
-```
-
-## Customisation
-
-### Adding a Project
-
-Projects are defined in `app/page.tsx` in the `projects` array. Each entry supports:
-
-```typescript
-{
-  num: "05",
-  name: { es: "Mi Proyecto", en: "My Project" },
-  stack: ["Next.js", "TypeScript"],
-  desc: { es: "Descripción corta", en: "Short description" },
-  details: { es: "Descripción larga...", en: "Long description..." },
-  url: "https://myproject.com",          // optional — adds "View Site" button
-  github: "https://github.com/user/repo", // optional — adds "View Code" button
-  media: ["/projects/my-project/1.png"], // optional — carousel screenshots
-  highlights: ["nextdotjs", "typescript"], // simple-icons slugs for 3D keyboard
-  badge: { es: "En desarrollo", en: "In progress" }, // optional status badge
-  align: "left",                         // card alignment
-  section: "project5",                   // data attribute for scroll nav
-}
-```
-
-### Changing Themes
-
-Seasonal colour tokens are defined as CSS custom properties in `app/globals.css` under `[data-season="..."]` selectors. Edit or add new seasons there.
-
-### Translations
-
-All UI strings live in `lib/i18n.ts` as a flat dictionary with `{ es, en }` leaves. Add new keys or languages by extending the structure.
-
-## Deployment
-
-### Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Txemalon/3d-portfolio)
-
-### Docker / Self-Hosted
-
-The included `Dockerfile` produces a standalone Next.js image. Works with any container platform (Railway, Fly.io, Coolify, etc.):
-
-```bash
-docker build -t 3d-portfolio .
-docker run -p 3000:3000 3d-portfolio
-```
-
-## Performance
-
-- **Standalone output** — No `node_modules` in production; the Docker image is ~100 MB.
-- **Lazy loading** — Project screenshots use native lazy loading.
-- **Font optimisation** — Uses `next/font` for zero-layout-shift web fonts.
-- **Turbopack** — Sub-300ms dev server cold starts.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## Author
-
-**Jose Maria Albero Belamendia (Txema)**
-
-- [LinkedIn](https://es.linkedin.com/in/jose-mar%C3%ADa-albero-belamendia-b9319a246)
-- [GitHub](https://github.com/Txemalon)
-- [X / Twitter](https://x.com/Txemalon)
+---
+*Diseñado con el motor original de [Txemalon](https://github.com/Txemalon/3d-portfolio).*
