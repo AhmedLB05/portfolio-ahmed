@@ -27,6 +27,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "export",
+  basePath: "/portfolio-ahmed",
   images: {
     unoptimized: true,
   },
