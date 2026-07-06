@@ -54,7 +54,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posX: 0,
     posY: -0.6,
     posZ: 0,
-    scale: 1.3,
+    scale: 1.1,
   },
   // Project 1 — text is left-aligned, so the keyboard slides to the RIGHT,
   // near the giant "01" watermark.
@@ -65,7 +65,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posX: 1.5,
     posY: 0.2,
     posZ: 0,
-    scale: 0.85,
+    scale: 0.75,
   },
   // Project 2 — text is right-aligned, keyboard moves to the LEFT near "02".
   project2: {
@@ -75,7 +75,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posX: -1.9,
     posY: 0.2,
     posZ: 0,
-    scale: 0.85,
+    scale: 0.75,
   },
   // Project 3 — left-aligned again, keyboard right.
   project3: {
@@ -85,7 +85,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posX: 1.5,
     posY: 0.2,
     posZ: 0,
-    scale: 0.85,
+    scale: 0.75,
   },
   // Project 4 — right-aligned, keyboard left.
   project4: {
@@ -95,7 +95,7 @@ const SECTION_STATES: Record<string, KeyboardState> = {
     posX: -1.9,
     posY: 0.2,
     posZ: 0,
-    scale: 0.85,
+    scale: 0.75,
   },
   experience: {
     yaw: Math.PI * 0.3,
@@ -131,7 +131,7 @@ const MOBILE_STATE: KeyboardState = {
   posX: 0,
   posY: 0,
   posZ: 0,
-  scale: 1.55,
+  scale: 1.3,
 };
 
 // Track which data-kb-section element is currently most prominent on-screen.
@@ -429,14 +429,11 @@ function Keycap({
   // Each key gets its own random frequency + phase, stable across re-renders
   // so every keycap's random bob feels independent (no synchronised wave).
   // Sampled once at mount.
-  const randomBob = useMemo(
-    () => ({
-      freq: 0.6 + Math.random() * 0.6, // 0.6..1.2 Hz-ish
-      phase: Math.random() * Math.PI * 2,
-      threshold: 0.45 + Math.random() * 0.2, // 0.45..0.65 — higher = rarer pop
-    }),
-    []
-  );
+  const [randomBob] = useState(() => ({
+    freq: 0.6 + Math.random() * 0.6, // 0.6..1.2 Hz-ish
+    phase: Math.random() * Math.PI * 2,
+    threshold: 0.45 + Math.random() * 0.2, // 0.45..0.65 — higher = rarer pop
+  }));
 
   const iconTexture = useMemo(
     () => makeIconTexture(icon.path, `#${icon.hex}`),
