@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/portfolio-ahmed",
+  basePath: process.env.NODE_ENV === "production" ? "/portfolio-ahmed" : "",
   images: {
     unoptimized: true,
   },
