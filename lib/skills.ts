@@ -1,19 +1,22 @@
 import {
-  siCss,
-  siDocker,
-  siGit,
-  siHtml5,
   siJavascript,
-  siNextdotjs,
-  siNodedotjs,
-  siOdoo,
-  siPhp,
-  siPostgresql,
-  siPython,
-  siReact,
-  siTailwindcss,
   siTypescript,
-  siVuedotjs,
+  siReact,
+  siNextdotjs,
+  siAngular,
+  siGraphql,
+  siNodedotjs,
+  siNestjs,
+  siSpringboot,
+  siFlutter,
+  siOpenjdk,
+  siRedis,
+  siPostgresql,
+  siMysql,
+  siDocker,
+  siKubernetes,
+  siGit,
+  siJunit5,
 } from "simple-icons";
 
 export type SkillIcon = {
@@ -23,14 +26,12 @@ export type SkillIcon = {
   hex: string;
 };
 
-// 3×5 grid — consumed by the 3D keyboard (one icon per keycap) and, on mobile,
-// by the flat list below for the static skills grid that replaces the
-// hover-driven keyboard interaction. Taglines live in the i18n dictionary
-// under `keyboard.taglines.<slug>`.
+// Grid 3x6 — una tecla por icono en el teclado 3D.
+// Los taglines están en lib/i18n.ts bajo `keyboard.taglines.<slug>`.
 export const SKILLS_GRID: readonly (readonly SkillIcon[])[] = [
-  [siJavascript, siTypescript, siHtml5, siCss, siTailwindcss],
-  [siPython, siReact, siNextdotjs, siVuedotjs, siNodedotjs],
-  [siPhp, siOdoo, siPostgresql, siDocker, siGit],
+  [siJavascript, siTypescript, siReact, siNextdotjs, siAngular, siGraphql],
+  [siNodedotjs, siNestjs, siSpringboot, siFlutter, siOpenjdk, siRedis],
+  [siPostgresql, siMysql, siDocker, siKubernetes, siGit, siJunit5],
 ] as const;
 
 export const SKILLS_FLAT: readonly SkillIcon[] = SKILLS_GRID.flat();

@@ -23,22 +23,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Txema Albero — Software Engineer & Tech Lead",
+  title: "Ahmed Lhaouchi Briki — FullStack Developer",
   description:
-    "Portfolio inmersivo de Txema Albero — Software Engineer / Tech Lead. Experiencias web 3D con Next.js y React Three Fiber.",
-  authors: [{ name: "Txema Albero" }],
+    "Personal portfolio of Ahmed Lhaouchi Briki — FullStack Developer. Interactive 3D experience built with Next.js and React Three Fiber.",
+  authors: [{ name: "Ahmed Lhaouchi Briki" }],
   openGraph: {
-    title: "Txema Albero — Software Engineer & Tech Lead",
+    title: "Ahmed Lhaouchi Briki — FullStack Developer",
     description:
-      "Portfolio inmersivo con escena 3D interactiva. Next.js, React Three Fiber, GLSL.",
+      "Interactive 3D portfolio. Next.js, React Three Fiber, NestJS, Spring Boot, Flutter, AWS.",
     type: "website",
-    locale: "es_ES",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Txema Albero — Software Engineer & Tech Lead",
+    title: "Ahmed Lhaouchi Briki — FullStack Developer",
     description:
-      "Portfolio inmersivo con escena 3D interactiva. Next.js, React Three Fiber, GLSL.",
+      "Interactive 3D portfolio. Next.js, React Three Fiber, NestJS, Spring Boot, Flutter, AWS.",
   },
 };
 
@@ -54,7 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >

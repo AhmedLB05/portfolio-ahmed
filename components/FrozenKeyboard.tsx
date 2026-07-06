@@ -279,14 +279,14 @@ function makeIconTexture(
 
 const SKILLS = SKILLS_GRID;
 
-const COLS = 5;
+const COLS = 6;
 const ROWS = 3;
 const KEYCAP_SIZE = 0.4;
 const KEYCAP_HEIGHT = 0.28;
 const KEYCAP_TOP_SCALE = 0.78;
 const COL_SPACING = 0.42;
 const ROW_SPACING = 0.42;
-const BASE_WIDTH = 2.4;
+const BASE_WIDTH = 2.85;
 const BASE_DEPTH = 1.4;
 const BASE_HEIGHT = 0.26;
 const ICON_PLANE_SIZE = KEYCAP_SIZE * KEYCAP_TOP_SCALE * 0.78;

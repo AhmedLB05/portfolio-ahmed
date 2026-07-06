@@ -1,12 +1,10 @@
-// Minimal i18n layer: a single dictionary keyed by dot-path, with each leaf
-// carrying both the ES and EN copy. Consumers read via `useLanguage().t()`
-// which resolves the path for the active language. Keeping it flat and
-// co-located (rather than adding a dependency like next-intl) keeps the
-// project tiny and makes the strings easy to audit.
+// Capa i18n minimalista: diccionario plano con clave por punto.
+// El portfolio de Ahmed está en inglés únicamente.
+// El idioma por defecto y único es "en".
 export type Lang = "es" | "en";
 
-export const LANGUAGES: Lang[] = ["es", "en"];
-export const DEFAULT_LANG: Lang = "es";
+export const LANGUAGES: Lang[] = ["en"];
+export const DEFAULT_LANG: Lang = "en";
 
 type Leaf = Record<Lang, string>;
 type Node = Leaf | { [key: string]: Node };
@@ -17,22 +15,22 @@ function isLeaf(node: Node): node is Leaf {
 
 export const DICT = {
   picker: {
-    season: { es: "Estación", en: "Season" },
-    language: { es: "Idioma", en: "Language" },
+    season: { es: "Season", en: "Season" },
+    language: { es: "Language", en: "Language" },
   },
   seasons: {
-    spring: { es: "Primavera", en: "Spring" },
-    summer: { es: "Verano", en: "Summer" },
-    autumn: { es: "Otoño", en: "Autumn" },
-    winter: { es: "Invierno", en: "Winter" },
+    spring: { es: "Spring", en: "Spring" },
+    summer: { es: "Summer", en: "Summer" },
+    autumn: { es: "Autumn", en: "Autumn" },
+    winter: { es: "Winter", en: "Winter" },
   },
   nav: {
-    aria: { es: "Secciones", en: "Sections" },
-    home: { es: "Inicio", en: "Home" },
+    aria: { es: "Sections", en: "Sections" },
+    home: { es: "Home", en: "Home" },
     stack: { es: "Stack", en: "Stack" },
-    experience: { es: "Experiencia", en: "Experience" },
-    project: { es: "Proyecto", en: "Project" },
-    contact: { es: "Contacto", en: "Contact" },
+    experience: { es: "Experience", en: "Experience" },
+    project: { es: "Project", en: "Project" },
+    contact: { es: "Contact", en: "Contact" },
   },
   header: {
     availability: {
@@ -41,134 +39,146 @@ export const DICT = {
     },
   },
   hero: {
-    greeting: { es: "Hola, soy", en: "Hi, I am" },
+    greeting: { es: "Hi, I am", en: "Hi, I am" },
     roleLine: {
-      es: "Software Engineer & Tech Lead.",
-      en: "Software Engineer & Tech Lead.",
+      es: "FullStack Developer.",
+      en: "FullStack Developer.",
     },
     tagline: {
-      es: "Especializado en ERPs y aplicaciones full-stack para empresas.",
-      en: "Specialised in ERPs and full-stack apps for businesses.",
+      es: "Building scalable web & mobile apps from backend to frontend.",
+      en: "Building scalable web & mobile apps from backend to frontend.",
     },
-    cv: { es: "Descargar CV", en: "Download CV" },
-    hire: { es: "Contactarme", en: "Contact me" },
-    scroll: { es: "Scroll para explorar", en: "Scroll to explore" },
+    cv: { es: "Download CV", en: "Download CV" },
+    hire: { es: "Contact me", en: "Contact me" },
+    scroll: { es: "Scroll to explore", en: "Scroll to explore" },
     keysHint: {
-      es: "· hover sobre las teclas",
+      es: "· hover over the keys",
       en: "· hover over the keys",
     },
   },
   stack: {
     title: { es: "Tech Stack", en: "Tech Stack" },
     hint: {
-      es: "(hint: pasa el ratón por una tecla)",
+      es: "(hint: hover over a key)",
       en: "(hint: hover over a key)",
     },
     hintMobile: {
-      es: "Las herramientas con las que construyo.",
+      es: "The tools I build with.",
       en: "The tools I build with.",
     },
   },
   experience: {
     title: { es: "Experience", en: "Experience" },
     subtitle: {
-      es: "Mi trayectoria profesional.",
+      es: "My professional journey.",
       en: "My professional journey.",
     },
   },
   projects: {
-    kicker: { es: "proyecto", en: "project" },
-    viewMore: { es: "Ver más", en: "View more" },
-    openSite: { es: "Abrir sitio", en: "Visit site" },
-    viewCode: { es: "Ver código", en: "View code" },
-    close: { es: "Cerrar", en: "Close" },
+    kicker: { es: "project", en: "project" },
+    viewMore: { es: "View more", en: "View more" },
+    openSite: { es: "Visit site", en: "Visit site" },
+    viewCode: { es: "View code", en: "View code" },
+    close: { es: "Close", en: "Close" },
     stackLabel: { es: "Stack", en: "Stack" },
-    overview: { es: "Resumen", en: "Overview" },
+    overview: { es: "Overview", en: "Overview" },
   },
   contact: {
-    kicker: { es: "contacto", en: "contact" },
-    title: { es: "¿Hablamos?", en: "Let's talk?" },
+    kicker: { es: "contact", en: "contact" },
+    title: { es: "Let's talk?", en: "Let's talk?" },
     body: {
-      es: "Si lo que has visto te interesa, el teclado ya está listo para recibir el primer mensaje.",
-      en: "If what you've seen interests you, the keyboard is ready for the first message.",
+      es: "If something you've seen interests you, I'm just one message away. Let's build something great together.",
+      en: "If something you've seen interests you, I'm just one message away. Let's build something great together.",
     },
-    copyEmail: { es: "Copiar email", en: "Copy email" },
-    openMail: { es: "Abrir mail", en: "Open mailto" },
+    copyEmail: { es: "Copy email", en: "Copy email" },
+    openMail: { es: "Open mailto", en: "Open mailto" },
     github: { es: "GitHub", en: "GitHub" },
     linkedin: { es: "LinkedIn", en: "LinkedIn" },
-    emailToast: { es: "Email copiado", en: "Email copied" },
+    emailToast: { es: "Email copied", en: "Email copied" },
     footer: {
-      es: "© 2026 Txema Albero. Todos los derechos reservados.",
-      en: "© 2026 Txema Albero. All rights reserved.",
+      es: "© 2026 Ahmed Lhaouchi Briki. All rights reserved.",
+      en: "© 2026 Ahmed Lhaouchi Briki. All rights reserved.",
     },
   },
   keyboard: {
     taglines: {
       javascript: {
-        es: "Donde empezó todo. Sigue aquí, sigue mandando.",
+        es: "Where it all started. Still here, still in charge.",
         en: "Where it all started. Still here, still in charge.",
       },
       typescript: {
-        es: "Mismo JS, con cinturón de seguridad.",
+        es: "Same JS, with a seatbelt.",
         en: "Same JS, with a seatbelt.",
       },
-      html5: {
-        es: "Los huesos de cualquier página.",
-        en: "The bones of any page.",
-      },
-      css: {
-        es: "El detalle que separa lo bueno de lo bonito.",
-        en: "What separates good from beautiful.",
-      },
-      tailwindcss: {
-        es: "Utility-first. Diseño en el HTML.",
-        en: "Utility-first. Design inside the HTML.",
-      },
-      python: {
-        es: "Se lee como inglés, escala como cohete.",
-        en: "Reads like English, scales like a rocket.",
-      },
       react: {
-        es: "Componentes, componentes, componentes.",
+        es: "Components, components, components.",
         en: "Components, components, components.",
       },
       nextdotjs: {
-        es: "React adulto: routing, SSR, edge.",
+        es: "React all grown up: routing, SSR, edge.",
         en: "React all grown up: routing, SSR, edge.",
       },
-      vuedotjs: {
-        es: "El frontend más relajado.",
-        en: "The most relaxed frontend.",
+      angular: {
+        es: "Component-based. Opinionated. Enterprise-ready.",
+        en: "Component-based. Opinionated. Enterprise-ready.",
       },
       nodedotjs: {
-        es: "JavaScript en el servidor.",
+        es: "JavaScript on the server.",
         en: "JavaScript on the server.",
       },
-      php: {
-        es: "Mueve más web de la que crees.",
-        en: "Runs more of the web than you think.",
+      nestjs: {
+        es: "Node with structure. TypeScript all the way.",
+        en: "Node with structure. TypeScript all the way.",
       },
-      odoo: {
-        es: "ERP que no hace llorar.",
-        en: "ERP that doesn't make you cry.",
+      springboot: {
+        es: "Java backend, production-hardened.",
+        en: "Java backend, production-hardened.",
+      },
+      flutter: {
+        es: "One codebase. Every screen.",
+        en: "One codebase. Every screen.",
+      },
+      openjdk: {
+        es: "Java's open engine. Production-hardened.",
+        en: "Java's open engine. Production-hardened.",
       },
       postgresql: {
-        es: "La base de datos aburrida que siempre funciona.",
+        es: "The boring database that always works.",
         en: "The boring database that always works.",
       },
+      mysql: {
+        es: "Relational, reliable, battle-tested.",
+        en: "Relational, reliable, battle-tested.",
+      },
       docker: {
-        es: "Igual en mi máquina, igual en producción.",
+        es: "Same on my machine, same in production.",
         en: "Same on my machine, same in production.",
       },
+      kubernetes: {
+        es: "Orchestration at cloud scale.",
+        en: "Orchestration at cloud scale.",
+      },
       git: {
-        es: "Historia y máquina del tiempo del código.",
+        es: "History and a time machine for your code.",
         en: "History and a time machine for your code.",
+      },
+      graphql: {
+        es: "Query exactly what you need.",
+        en: "Query exactly what you need.",
+      },
+      redis: {
+        es: "In-memory speed at scale.",
+        en: "In-memory speed at scale.",
+      },
+      junit5: {
+        es: "Battle-tested testing.",
+        en: "Battle-tested testing.",
       },
     },
   },
 } as const satisfies Record<string, Node>;
 
-// Resolve a dotted path in the dictionary for a given language.
+// Resuelve un path con puntos en el diccionario para el idioma dado.
 export function translate(path: string, lang: Lang): string {
   const parts = path.split(".");
   let ref: Node = DICT as unknown as Node;
@@ -177,6 +187,6 @@ export function translate(path: string, lang: Lang): string {
     ref = (ref as { [key: string]: Node })[p];
     if (ref === undefined) return path;
   }
-  if (isLeaf(ref)) return ref[lang] ?? ref.es ?? path;
+  if (isLeaf(ref)) return ref[lang] ?? ref.en ?? path;
   return path;
 }
